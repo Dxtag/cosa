@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container pt-3">
+    <div class="row">
+
+        {% for product in products %}
+        <div class="col-lg-6 col-md-12 mb-4">
+
+            <div class="card h-100">
+
+                <img class="card-img-top" src="{{product.photo.url}}" alt="photo of {{product.name}}" height="350px">
+
+                <div class="card-body">
+
+                    <h4 class="card-title">{{product.name}}</h4>
+
+                    <div class="d-flex bd-highlight mt-3 mb-0">
+
+                        <div class="mr-auto p-1 bd-highlight">
+                            <h5>{{product.price}}zł</h5>
+                        </div>
+                        <div class="ml-auto p-1 bd-highlight">
+                            <a href="{% url 'shop:product' product.pk %}" class="btn btn-primary stretched-link">Details</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}

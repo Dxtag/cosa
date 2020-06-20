@@ -1,9 +1,25 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<form method="POST">
-    {% csrf_token %}
-    {{form | crispy}}
-    <input type="submit" class="btn btn-success">
-</form>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <div class="card mt-4">
+                <div class="card-body">
+
+                    <div class="card-title border-bottom"><h3>Register</h3></div>
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{form | crispy}}
+                        <input type="submit" class="btn btn-success">
+                    </form>
+
+                    <small><a class="text-primary" href="{% url 'login' %}">Log in</a></small>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

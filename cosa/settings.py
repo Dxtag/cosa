@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'crispy_forms'
+    'crispy_forms',
+    'accounts.apps.AccountsConfig',
+    'shop.apps.ShopConfig'
 ]
 
 MIDDLEWARE = [
@@ -124,4 +126,9 @@ ACCOUNT_ACTIVATION_DAYS = 3
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+# Tylko testowo
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')

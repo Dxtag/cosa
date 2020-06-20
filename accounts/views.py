@@ -1,12 +1,15 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+from django_registration.views import RegistrationView, ActivationView
 
+@login_required
+def profile_view(request):
+    return render(request, "accounts/profile.html")
 
-# Create your views here.
-def index_view(request):
-    return HttpResponse("Your account")
-
-def account_view(request, username):
-    user = get_object_or_404(User, username=username)
-    return HttpResponse(user.username)
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect("accounts:login")
