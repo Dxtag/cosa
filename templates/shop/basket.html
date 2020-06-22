@@ -1,0 +1,23 @@
+{% extends "base_card.html" %}
+
+{% block card_title %}Basket{% endblock %}
+{% block card_content %}
+
+{% for product in products %}
+<div class="row border-bottom py-3">
+    <div class="col-12 col-sm-12 col-md-2 text-center">
+        <img class="img-responsive" src="{{product.product.photo.url}}" alt="{{product.product.name}}" width="120"
+            height="80">
+    </div>
+    <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
+        <h4 class="product-name"><strong>{{product.product.name}}</strong></h4>
+    </div>
+    <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
+        <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
+            <h6><strong>{{product.product.price}}zł x {{product.quantity}}</strong></h6> 
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

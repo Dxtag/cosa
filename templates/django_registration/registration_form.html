@@ -1,25 +1,16 @@
-{% extends "base.html" %}
+{% extends "base_card.html" %}
 {% load crispy_forms_tags %}
-{% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-lg-10 mx-auto">
-            <div class="card mt-4">
-                <div class="card-body">
 
-                    <div class="card-title border-bottom"><h3>Register</h3></div>
+{% block card_title %}Register{% endblock %}
 
-                    <form method="POST">
-                        {% csrf_token %}
-                        {{form | crispy}}
-                        <input type="submit" class="btn btn-success">
-                    </form>
-
-                    <small><a class="text-primary" href="{% url 'login' %}">Log in</a></small>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{% block card_content %}
+<form method="POST">
+    {% csrf_token %}
+    {{form | crispy}}
+    <input type="submit" class="btn btn-success">
+</form>
 {% endblock %}
+
+{% block links %}
+<a class="text-primary" href="{% url 'login' %}">Log in </a>
+{% endblock links%}
