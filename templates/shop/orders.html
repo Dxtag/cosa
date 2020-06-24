@@ -1,0 +1,18 @@
+{% extends "base_card.html" %}
+{% block card_title %}Orders{% endblock %}
+
+{% block card_content %}
+{% for order  in orders %}
+    {{order.customer.username}}
+    {{order.cost}}
+    {{order.is_sent}}
+    <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="pk" value="{{order.pk}}">
+        <input type="submit" value="Sent">
+    </form>
+{% endfor %}
+{% endblock %}
+
+{% block links %}
+{% endblock links%}

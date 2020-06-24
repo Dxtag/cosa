@@ -2,22 +2,68 @@
 
 {% block card_title %}Basket{% endblock %}
 {% block card_content %}
-
+<script>var price = [];</script>
 {% for product in products %}
+
 <div class="row border-bottom py-3">
+
     <div class="col-12 col-sm-12 col-md-2 text-center">
         <img class="img-responsive" src="{{product.product.photo.url}}" alt="{{product.product.name}}" width="120"
             height="80">
     </div>
+
     <div class="col-12 text-sm-center col-sm-12 text-md-left col-md-6">
-        <h4 class="product-name"><strong>{{product.product.name}}</strong></h4>
+        <h4 class="product-name">{{product.product.name}}</h4>
     </div>
+
     <div class="col-12 col-sm-12 text-sm-center col-md-4 text-md-right row">
-        <div class="col-3 col-sm-3 col-md-6 text-md-right" style="padding-top: 5px">
-            <h6><strong>{{product.product.price}}zł x {{product.quantity}}</strong></h6> 
+        <div class="col-3 col-sm-3 col-md-6 text-md-right pt-1">
+
+            <h6>{{product.product.price}}zł x </h6>
+
+            <form class="form-inline " method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="pk" value="{{product.pk}}">
+                <input id="quantity" type="number" min="0" max="{{ product.product.stock }}" value="{{product.quantity}}" class="form-control"
+                    name="quantity" style="width: 70px;">
+                <input type="submit" value="set" class="btn btn-success">
+            </form>
+                <script>
+                    var product_price = Math.floor(({{ product.product.price }} * {{ product.quantity }})*100)/100;
+                    document.write(product_price+"zł");
+                    price.push(product_price);
+                </script>
         </div>
     </div>
 </div>
-{% endfor %}
 
+{% endfor %}
+{% if products %}
+<p>price:<span id="price"></span>zł</p>
+<div class="form-inline">
+<label><a href='#'>I accept  rules</a></label>
+<input type="checkbox" id="rules">
+</div>
+<button class="btn btn-success">Submit</button>
+
+<script>
+    $("span#price").html((price.reduce((partial_sum, a) => partial_sum + a,0)))
+    $(document).ready(
+        $("button.btn").click(
+            function rules(){
+                if($("input[type='checkbox']").prop("checked")){
+
+                    window.location.replace( "{% url 'shop:index' %}" )
+                }
+                else{
+                    alert("Accept rules!")
+                }
+            }
+
+        )
+    );
+</script>
+{% else %}
+<p class="text-center">EMPTY</p>
+{% endif %}
 {% endblock %}

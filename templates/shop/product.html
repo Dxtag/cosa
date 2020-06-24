@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+{% load crispy_forms_tags %}
 
 <div class="container">
     <div class="row">
         <div class="col-lg-10 mx-auto">
-        
+
             <div class="card mt-4">
                 <img class="card-img-top img-fluid" src="{{product.photo.url}}" alt="photo of {{product.name}}">
                 <div class="card-body">
@@ -13,16 +14,23 @@
                         <div class="mr-auto p-1 bd-highlight">
                             <h4>{{product.price}}zł</h4>
                         </div>
-                        <div>
-                            <a href="#" class="btn btn-success ml-auto">Add to cart</a>
-                        </div>
+                        <form method="POST" class="form-inline">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-success ml-auto"  value="Add to cart" target="_self">
+                            <input type="number" value="1" min="1" max="{{product.stock}}" name="quantity"
+                                class="form-control" style="width: 60px;">
+                        </form>
                     </div>
+                </div>
+                <div class="p-1">
                     <small>Purchased: {{product.purchases}}</small>
                     <small>Left: {{product.stock}}</small>
+                    <small>In baskets: {{product.in_basket}}</small>
                 </div>
             </div>
 
-            <div class="card card-outline-secondary my-4">
+
+            <div class=" card card-outline-secondary my-4">
                 <div class="card-header">
                     <h4>Description</h4>
                 </div>
