@@ -1,6 +1,3 @@
-{{activation_key}}
-{{expiration_days}}
-{{request}}
-{{scheme}}
-{{site}}
-{{user}}
+Activation link for {{user}}.
+{{site}}/accounts/activate/{{activation_key}}
+Expires in {{expiration_days}} days.

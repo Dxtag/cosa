@@ -1,6 +1,4 @@
-{{activation_key}}
-{{expiration_days}}
-{{request}}
-{{scheme}}
-{{site}}
-{{user}}
+Activation link for {{user}} ({{site}})
+
+
+

@@ -3,7 +3,7 @@
 
 <div class="container pt-3">
     <div class="row">
-
+            
         {% for product in products %}
         <div class="col-lg-6 col-md-12 mb-4">
 
@@ -20,8 +20,12 @@
                         <div class="mr-auto p-1 bd-highlight">
                             <h5>{{product.price}}zł</h5>
                         </div>
+                        {% if product.is_new %}
+                        <h5 class="text-success">NEW!</h5>
+                        {% endif %}
                         <div class="ml-auto p-1 bd-highlight">
-                            <a href="{% url 'shop:product' product.pk %}" class="btn btn-primary stretched-link">Details</a>
+                            <a href="{% url 'shop:product' product.pk %}"
+                                class="btn btn-primary stretched-link">Details</a>
                         </div>
 
                     </div>

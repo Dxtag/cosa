@@ -40,7 +40,7 @@
                     <a class="nav-link" href="{% url 'profile' %}">Account</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Basket</a>
+                    <a class="nav-link" href="{% url 'shop:basket' %}">Basket</a>
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'logout' %}">Logout</a>
@@ -69,7 +69,6 @@
         {% block content %}
         {% endblock %}
     </main>
-
 
 </body>
 

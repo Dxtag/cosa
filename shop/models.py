@@ -1,28 +1,46 @@
 from django.db import models
 from django.contrib.auth.models import User
 from annoying.fields import AutoOneToOneField
+from datetime import datetime, timedelta, timezone
 
 
 class Product(models.Model):
     name = models.CharField(max_length=30, unique=True)
     description = models.TextField()
+
     price = models.DecimalField(max_digits=6, decimal_places=2)
+
     photo = models.ImageField(upload_to="shop/product")
-    add_date = models.DateTimeField(auto_now_add=True)
-    purchases = models.IntegerField(default=0)
-    stock = models.IntegerField()
+
+    pub_date = models.DateTimeField(auto_now_add=True)
+    change_date = models.DateTimeField(auto_now=True)
+
+    purchases = models.PositiveIntegerField(default=0)
+    stock = models.PositiveIntegerField()
+    in_basket = models.PositiveIntegerField(default=0)
+
     is_archival = models.BooleanField(default=False)
+    
 
     def __str__(self):
         return self.name
 
+    def is_new(self):
+        if (datetime.now(timezone.utc) - self.pub_date) < timedelta(days=7):
+            return True
+
 
 class Order(models.Model):
     cost = models.DecimalField(max_digits=10, decimal_places=2)
+
     inpost_code = models.CharField(max_length=6)
+
     change_date = models.DateTimeField(auto_now=True)
+    order_date = models.DateTimeField(auto_now_add=True)
+
     customer = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="orders")
+
     is_paid = models.BooleanField(default=False)
     is_sent = models.BooleanField(default=False)
 
@@ -34,7 +52,7 @@ class Order(models.Model):
         else:
             return f"order nr {self.pk} to pay"
 
-"""
+
 class Basket(models.Model):
     customer = AutoOneToOneField(
         User, on_delete=models.CASCADE, related_name="basket")
@@ -44,7 +62,12 @@ class Basket(models.Model):
 
 
 class BasketProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING, )
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, )
+
     basket = models.ForeignKey(
         Basket, on_delete=models.CASCADE, related_name="products")
-    quantity = models.IntegerField()"""
+        
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.product.name} in basket"
