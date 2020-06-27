@@ -5,12 +5,15 @@
         <div class="col-lg-10 mx-auto">
             <div class="card card-outline-secondary my-4">
                 <div class="card-header">
-                    <h4>Hi {{user.username}}!</h4>
+                    <h4>Witaj {{user.username}}!</h4>
                 </div>
                 <div class="card-body">
                     <ul>
-                        <li><a href="#">Orders</a></li>
-                        <li><a href="{%  url 'password_change' %}">Password change</a></li>
+                        <li><a href="{%  url 'orders:orders' %}" >Zamówienia</a></li>
+                        <li><a href="{%  url 'password_change' %}">Zmień hasło</a></li>
+                        {% if user.is_staff %}
+                        <li><a class="text-warning" href="{%  url 'orders:staff_orders' %}">Zamówienia (dla pracowników)</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

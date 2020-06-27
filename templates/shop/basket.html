@@ -1,8 +1,8 @@
 {% extends "base_card.html" %}
 
-{% block card_title %}Basket{% endblock %}
+{% block card_title %}Koszyk{% endblock %}
 {% block card_content %}
-<script>var price = [];</script>
+<script>var price = 0;</script>
 {% for product in products %}
 
 <div class="row border-bottom py-3">
@@ -28,35 +28,29 @@
                     name="quantity" style="width: 70px;">
                 <input type="submit" value="set" class="btn btn-success">
             </form>
-                <script>
-                    var product_price = Math.floor(({{ product.product.price }} * {{ product.quantity }})*100)/100;
-                    document.write(product_price+"zł");
-                    price.push(product_price);
-                </script>
+                {{product.full_price}}zł
         </div>
     </div>
 </div>
-
 {% endfor %}
 {% if products %}
-<p>price:<span id="price"></span>zł</p>
+<p id="price"></p>
 <div class="form-inline">
-<label><a href='#'>I accept  rules</a></label>
+<label><a href='#'>Znam regulamin</a></label>
 <input type="checkbox" id="rules">
 </div>
-<button class="btn btn-success">Submit</button>
-
+<button class="btn btn-success">Zamów</button>
+{{basket_price}}zł
 <script>
-    $("span#price").html((price.reduce((partial_sum, a) => partial_sum + a,0)))
     $(document).ready(
         $("button.btn").click(
             function rules(){
                 if($("input[type='checkbox']").prop("checked")){
 
-                    window.location.replace( "{% url 'shop:index' %}" )
+                    window.location.replace( "{% url 'orders:place_order' '123dup' %}" )
                 }
                 else{
-                    alert("Accept rules!")
+                    alert("Musisz potwierdzić regulamin żeby przejść dalej")
                 }
             }
 
@@ -64,6 +58,6 @@
     );
 </script>
 {% else %}
-<p class="text-center">EMPTY</p>
+<p class="text-center">Pusto <a href="{% url 'shop:index' %}">dodaj coś do koszyka</a> </p>
 {% endif %}
 {% endblock %}
