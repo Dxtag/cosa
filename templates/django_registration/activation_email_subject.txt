@@ -1,4 +1,4 @@
-Activation link for {{user}} ({{site}})
+Aktywacja dla użytkownika {{user}} na stronie ({{site}})
 
 
 

@@ -16,23 +16,22 @@
                         </div>
                         <form method="POST" class="form-inline">
                             {% csrf_token %}
-                            <input type="submit" class="btn btn-success ml-auto"  value="Add to cart" target="_self">
+                            <input type="submit" class="btn btn-success ml-auto"  value="Dodaj do koszyka" target="_self">
                             <input type="number" value="1" min="1" max="{{product.stock}}" name="quantity"
                                 class="form-control" style="width: 60px;">
                         </form>
                     </div>
                 </div>
                 <div class="p-1">
-                    <small>Purchased: {{product.purchases}}</small>
-                    <small>Left: {{product.stock}}</small>
-                    <small>In baskets: {{product.in_basket}}</small>
+                    <small>Kupiono: {{product.purchases}}</small>
+                    <small>Na stanie: {{product.stock}}</small>
                 </div>
             </div>
 
 
             <div class=" card card-outline-secondary my-4">
                 <div class="card-header">
-                    <h4>Description</h4>
+                    <h4>Opis</h4>
                 </div>
                 <div class="card-body">
                     <p>{{product.description}}</p>

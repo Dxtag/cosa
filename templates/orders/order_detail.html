@@ -1,0 +1,13 @@
+{% extends "base_card.html" %}
+{% block card_title %}Order nr {{order.pk}} {% endblock %}
+
+{% block card_content %}
+{{order.pub_date}}
+{% for product  in products %}
+    <a href="{% url 'shop:product' product.product.pk %}">{{product.product.name}}</a>
+    {{product.price}}
+    {{product.quantity}}
+{% endfor %}
+{% endblock %}
+{% block links %}
+{% endblock links%}

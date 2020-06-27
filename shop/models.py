@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from annoying.fields import AutoOneToOneField
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
+from django.utils import timezone
 
 
 class Product(models.Model):
@@ -10,47 +11,24 @@ class Product(models.Model):
 
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
-    photo = models.ImageField(upload_to="shop/product")
+    photo = models.ImageField(upload_to="shop/product", default="shop/product/slav.png")
 
     pub_date = models.DateTimeField(auto_now_add=True)
     change_date = models.DateTimeField(auto_now=True)
 
     purchases = models.PositiveIntegerField(default=0)
     stock = models.PositiveIntegerField()
-    in_basket = models.PositiveIntegerField(default=0)
 
     is_archival = models.BooleanField(default=False)
-    
 
     def __str__(self):
         return self.name
 
     def is_new(self):
-        if (datetime.now(timezone.utc) - self.pub_date) < timedelta(days=7):
-            return True
+        return True if (timezone.now() - self.pub_date) < timedelta(days=7) and timezone.now() >= self.pub_date else False
 
-
-class Order(models.Model):
-    cost = models.DecimalField(max_digits=10, decimal_places=2)
-
-    inpost_code = models.CharField(max_length=6)
-
-    change_date = models.DateTimeField(auto_now=True)
-    order_date = models.DateTimeField(auto_now_add=True)
-
-    customer = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="orders")
-
-    is_paid = models.BooleanField(default=False)
-    is_sent = models.BooleanField(default=False)
-
-    def __str__(self):
-        if self.is_sent:
-            return f"order nr{self.pk} closed"
-        elif self.is_paid:
-            return f"order nr {self.pk} paid"
-        else:
-            return f"order nr {self.pk} to pay"
+    def is_future(self):
+        return True if timezone.now() <= self.pub_date else False
 
 
 class Basket(models.Model):
@@ -60,14 +38,20 @@ class Basket(models.Model):
     def __str__(self):
         return f"{self.customer} basket"
 
+    def basket_price(self):
+        price = [i.full_price() for i in self.products.all()]
+        return sum(price)
 
 class BasketProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, )
 
     basket = models.ForeignKey(
         Basket, on_delete=models.CASCADE, related_name="products")
-        
+
     quantity = models.PositiveIntegerField()
 
     def __str__(self):
-        return f"{self.product.name} in basket"
+        return f"{self.product.name} in {self.basket.customer} basket"
+
+    def full_price(self):
+        return self.product.price * self.quantity

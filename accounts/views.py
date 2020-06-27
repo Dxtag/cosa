@@ -2,7 +2,6 @@ from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from django_registration.views import RegistrationView, ActivationView
 
 @login_required
