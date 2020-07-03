@@ -1,0 +1,12 @@
+{% extends "base_card.html" %}
+{% load crispy_forms_tags %}
+
+{% block card_title %}Zmień adres{% endblock %}
+
+{% block card_content %}
+<form method="POST">
+    {% csrf_token %}
+    {{form | crispy}}
+    <input type="submit" class="btn btn-success">
+</form>
+{% endblock %}

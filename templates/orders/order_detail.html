@@ -6,7 +6,7 @@
 {% for product  in products %}
     <a href="{% url 'shop:product' product.product.pk %}">{{product.product.name}}</a>
     {{product.price}}
-    {{product.quantity}}
+    {{product.quantity}}<br>
 {% endfor %}
 {% endblock %}
 {% block links %}

@@ -47,7 +47,7 @@
             function rules(){
                 if($("input[type='checkbox']").prop("checked")){
 
-                    window.location.replace( "{% url 'orders:place_order' '123dup' %}" )
+                    window.location.replace( "{% url 'orders:place_order' %}" )
                 }
                 else{
                     alert("Musisz potwierdzić regulamin żeby przejść dalej")

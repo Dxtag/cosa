@@ -33,20 +33,33 @@ def detail_order_view(request, pk):
     return render(request, "orders/order_detail.html", {"order":order, "products":products})
 
 
-
+# ---- reszta ----
 @login_required
-def place_order(request, inpost):
+def place_order(request):
+    if request.user.profile.inpost_code is None:
+        messages.warning(request, "Brak adresu")
+        return redirect("adress_update")
+
     basket_products = request.user.basket.products.all()
-    order = Order(customer=request.user, inpost_code=inpost)
-    order.save()
-    
+    enough = True
     for product in basket_products:
+        if product.quantity > product.product.stock:
+            product.delete()
+            enough = False 
+            messages.warning(request ,f"Ktoś był szybszy i wykupił {product.product.name}, spróbuj ponownie")
+    if not enough:
+        return redirect("shop:index")
+
+    order = Order(customer=request.user, inpost_code=request.user.profile.inpost_code)
+    order.save()
+
+    for product in basket_products: 
         product.product.stock -= product.quantity
         product.product.save()
         order_product = OrderProduct(quantity=product.quantity, product=product.product, price=product.product.price, order=order)
         order_product.save()
-
-    basket_products.delete()
+        product.delete()
+    
     messages.success(request, "Zamówienie utworzono")
     return redirect("orders:orders")
 

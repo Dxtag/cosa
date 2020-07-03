@@ -13,6 +13,8 @@ class PlaceOrderTest(TestCase):
             email='test@example.com',
             password='testpass'
         )
+        self.u.profile.inpost_code = "dup123"
+        self.u.profile.save()
         self.p = Product(name="p", description="p", price=1, stock=1)
         self.p.save()
         b = Basket(customer=self.u) 
@@ -21,7 +23,7 @@ class PlaceOrderTest(TestCase):
         self.client.login(username="testuser", password="testpass")
         
     def test_place_order(self):
-        self.client.get(reverse("orders:place_order", kwargs={"inpost":"dup123"}), follow=True)
+        self.client.get(reverse("orders:place_order") ,follow=True)
         self.assertEqual(Order.objects.count(), 1)
         self.assertEqual(Order.objects.get(pk=1).products.all().count(), 1)
         self.assertEqual(BasketProduct.objects.count(), 0)

@@ -11,7 +11,7 @@ class Product(models.Model):
 
     price = models.DecimalField(max_digits=6, decimal_places=2)
 
-    photo = models.ImageField(upload_to="shop/product", default="shop/product/slav.png")
+    photo = models.ImageField(upload_to="shop/product", default="shop/product/default.png")
 
     pub_date = models.DateTimeField(auto_now_add=True)
     change_date = models.DateTimeField(auto_now=True)

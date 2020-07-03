@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-lg-10 mx-auto">
 
-            <div class="card mt-4">
+            <article class="card mt-4">
                 <img class="card-img-top img-fluid" src="{{product.photo.url}}" alt="photo of {{product.name}}">
                 <div class="card-body">
                     <h3 class="card-title">{{product.name}}</h3>
@@ -16,7 +16,8 @@
                         </div>
                         <form method="POST" class="form-inline">
                             {% csrf_token %}
-                            <input type="submit" class="btn btn-success ml-auto"  value="Dodaj do koszyka" target="_self">
+                            <input type="submit" class="btn btn-success ml-auto" value="Dodaj do koszyka"
+                                target="_self">
                             <input type="number" value="1" min="1" max="{{product.stock}}" name="quantity"
                                 class="form-control" style="width: 60px;">
                         </form>
@@ -26,17 +27,43 @@
                     <small>Kupiono: {{product.purchases}}</small>
                     <small>Na stanie: {{product.stock}}</small>
                 </div>
-            </div>
+            </article>
 
 
-            <div class=" card card-outline-secondary my-4">
+            <article class=" card card-outline-secondary my-4">
                 <div class="card-header">
                     <h4>Opis</h4>
                 </div>
                 <div class="card-body">
                     <p>{{product.description}}</p>
                 </div>
-            </div>
+            </article>
+            <article class=" card card-outline-secondary my-4">
+                <div class="card-header">
+                    <h4>Dodaj komentarz</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'comments:add_comment'%}">
+                        {% csrf_token %}
+                        {{form | crispy}}
+                        <input type="hidden" value="{{product.pk}}" name="pk">
+                        <input type="submit" class="btn btn-success">
+                    </form>
+                </div>
+            </article>
+            <article class=" card card-outline-secondary my-4">
+                <div class="card-header">
+                    <h4>Komentarze</h4>
+                </div>
+                <div class="card-body">
+                    {% for comment in comments%}
+                    <section class="border-bottom py-1">
+                        <h5>{{comment.user}} {{comment.stars}}/5</h5>
+                        {{comment.content}}
+                    </section>
+                    {% endfor %}
+                </div>
+            </article>
 
         </div>
     </div>

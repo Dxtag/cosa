@@ -1,14 +1,31 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404, redirect
-from django.views.generic import ListView, DetailView
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django_registration.views import RegistrationView, ActivationView
+from .models import Profile
+from .forms import ProfileUpdateForm
+from django.contrib import messages
 
 @login_required
 def profile_view(request):
     return render(request, "accounts/profile.html")
 
-@login_required
-def logout_view(request):
-    logout(request)
-    return redirect("accounts:login")
+def adress_update(request):
+    form = ProfileUpdateForm(instance=request.user)
+    if request.method == "POST":
+        form = ProfileUpdateForm(request.POST, instance=request.user.profile)
+        if form.is_valid:
+            form.save()
+            messages.success(request, "Adres zmieniony")
+        else:
+            messages.warning(request, "Błąd")
+        return redirect("profile")
+
+    return render(request, "accounts/adress_update.html", {"form":form})
+
+    
+
+
+
+
+   
+

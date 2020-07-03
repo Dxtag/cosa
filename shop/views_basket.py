@@ -6,11 +6,28 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 
 
+def set_quantity(pk, quantity):
+    quantity = int(quantity)
+    product = get_object_or_404(BasketProduct, pk=pk)
+    if quantity == 0:
+        product.delete()
+    elif quantity <= product.product.stock:
+        product.quantity = quantity
+        product.save()
+    else:
+        return False
+    return True
+
 @login_required
 def basket_view(request):
     products = request.user.basket.products.all()
     if request.method == "POST":
-        return redirect("shop:set_quantity", pk=request.POST["pk"], quantity=request.POST["quantity"])
+        is_set = set_quantity(pk=request.POST["pk"], quantity=request.POST["quantity"])
+        if is_set:
+            messages.success(request, "Zmieniono ilość")
+        else:
+            messages.warning(request, "Błąd")
+        return redirect("shop:basket")
     return render(request, "shop/basket.html", {"products": products, "basket_price": request.user.basket.basket_price()})
 
 
@@ -38,18 +55,3 @@ def add_to_basket(request, pk, quantity):
         messages.success(request, f"Dodano {quantity} sztuk")
 
     return redirect("shop:product", pk=pk)
-
-
-@login_required
-def set_quantity(request, pk, quantity):
-    product = get_object_or_404(BasketProduct, pk=pk)
-
-    if quantity == 0:
-        product.delete()
-    elif quantity <= product.product.stock:
-        product.quantity = quantity
-        product.save()
-    else:
-        messages.warning(request, "Nie możesz dodać więcej niż jest na stanie")
-
-    return redirect("shop:basket")

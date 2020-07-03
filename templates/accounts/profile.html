@@ -11,6 +11,7 @@
                     <ul>
                         <li><a href="{%  url 'orders:orders' %}" >Zamówienia</a></li>
                         <li><a href="{%  url 'password_change' %}">Zmień hasło</a></li>
+                        <li><a href="{%  url 'adress_update' %}">Zmień adres</a></li>
                         {% if user.is_staff %}
                         <li><a class="text-warning" href="{%  url 'orders:staff_orders' %}">Zamówienia (dla pracowników)</a></li>
                         {% endif %}
