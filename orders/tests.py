@@ -27,5 +27,6 @@ class PlaceOrderTest(TestCase):
         self.assertEqual(Order.objects.count(), 1)
         self.assertEqual(Order.objects.get(pk=1).products.all().count(), 1)
         self.assertEqual(BasketProduct.objects.count(), 0)
+        self.assertEqual(self.p.purchases.objects.count(), 1)
 
 

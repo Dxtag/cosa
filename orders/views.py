@@ -55,6 +55,7 @@ def place_order(request):
 
     for product in basket_products: 
         product.product.stock -= product.quantity
+        product.product.purchases += product.quantity
         product.product.save()
         order_product = OrderProduct(quantity=product.quantity, product=product.product, price=product.product.price, order=order)
         order_product.save()

@@ -9,6 +9,7 @@ from django.contrib import messages
 def profile_view(request):
     return render(request, "accounts/profile.html")
 
+@login_required
 def adress_update(request):
     form = ProfileUpdateForm(instance=request.user)
     if request.method == "POST":
